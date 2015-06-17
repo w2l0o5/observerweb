@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Observer Web</title>
+    <link rel="icon" href="img/favicon.ico" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-table.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-table.js"></script>
+    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" src="js/grid-light.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+         $(document).ready(function(){
+             getNodes();
+             loadSysInfo();;
+             setTimeout(function(){
+                 loadCharts();
+             }, 2000);
+             loadProInfo();
+             $('#nodes li a').on("click", function(){
+                 console.log("Value: ", $(this).html());
+                 var value = $(this).html();
+                 if(value != "Connect Node"){
+                     changeNode(value);
+                 }
+             });
+         });
+    </script>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Observer</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#system" role="tab" data-toggle="tab">System</a></li>
+                    <li><a href="#load-charts" role="tab" data-toggle="tab">Load Charts</a></li>
+                    <li><a href="#applications" role="tab" data-toggle="tab">Appications</a></li>
+                    <li><a href="#processes" role="tab" data-toggle="tab">Processes</a></li>
+                    <li><a href="#table-viewer" role="tab" data-toggle="tab">Table Viewer</a></li>
+                    <li><a href="#trace-overview" role="tab" data-toggle="tab">Trace Overview</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Nodes <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" id="nodes">
+                            <li role="presentation"><a role="menuitem" href="#connect_node_modal" data-toggle="modal">Connect Node</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="tab-content" id="meneTabContent">
+        <div class="tab-pane active" id="system">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">System and Architecture</h3>
+                        </div>
+                        <table class="table">
+                            <tbody style="font-size:12px" id="system-architecture">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Memory Usage</h3>
+                        </div>
+                        <table class="table">
+                            <tbody style="font-size:12px" id="memory-info">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">CPU's and Threads</h3>
+                        </div>
+                        <table class="table">
+                            <tbody style="font-size:12px" id="cpu-threads">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Statistics</h3>
+                        </div>
+                        <table class="table">
+                            <tbody style="font-size:12px" id="statistics">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table data-toggle="table" data-cache="false" data-height="200">
+                        <thead>
+                        <tr>
+                            <th>Allocator Type</th>
+                            <th>Block size(KB)</th>
+                            <th>Carrier size(KB)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="alloctor-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="load-charts">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="scheduler-utilization" style="min-width:800px;height:300px"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="memory-usage" style="min-width:350px;height:300px"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="io-usage" style="min-width:350px;height:300px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="applications"><p>Applications</p></div>
+        <div class="tab-pane" id="processes">
+            <table data-toggle="table" data-cache="false" data-height="600">
+                <thead>
+                <tr>
+                    <th>Pid</th>
+                    <th>Name or Initial Func</th>
+                    <th>Reds</th>
+                    <th>Memory</th>
+                    <th>MsgQ</th>
+                    <th>Current Function</th>
+                </tr>
+                </thead>
+                <tbody id="process-table">
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="table-viewer"><p>Table Viewer</p></div>
+        <div class="tab-pane" id="trace-overview"><p>Trace Overview</p></div>
+    </div>
+</div> <!-- /container -->
+
+<div class="modal fade" id="connect_node_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Connect node</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="connect_node_form">
+                    <div class="form-group">
+                        <label class="control-label" for="nodename">Node name</label>
+                        <input type="text" class="form-control" name='nodename' id="nodename" placeholder="nodename@nodehost"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="cookie">Secret cookie</label>
+                        <input type="text" class="form-control" name='cookie' id="cookie" placeholder="Secret cookie" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="connectNode()">OK</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+.rebar
+deps
+ebin
+rel/observerweb
