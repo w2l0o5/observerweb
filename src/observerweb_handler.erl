@@ -25,19 +25,22 @@ process(<<"POST">>, true, Req) ->
   case proplists:get_value(<<"action">>, PostVals) of
     <<"get_sys">> ->
       Body = 'observerweb_lib':escape(do_process(get_sys, get_acc_node())),
-      cowboy_req:reply(200, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], list_to_binary(Body), Req2);
+      reply(200, list_to_binary(Body), Req2);
     <<"get_perf">> ->
       Type = proplists:get_value(<<"type">>, PostVals),
       Body = do_process(get_perf, {get_acc_node(), binary_to_atom(Type, latin1)}),
-      cowboy_req:reply(200, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], list_to_binary(Body), Req2);
+      reply(200, list_to_binary(Body), Req2);
+    <<"get_malloc">> ->
+      Body = do_process(get_malloc, get_acc_node()),
+      reply(200, list_to_binary(Body), Req2);
     <<"get_pro">> ->
       Type = proplists:get_value(<<"type">>, PostVals),
       Body = do_process(get_pro, Type),
-      cowboy_req:reply(200, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], Body, Req2);
+      reply(200, Body, Req2);
     <<"change_node">> ->
       Node = proplists:get_value(<<"node">>, PostVals),
       Result = do_process(change_node, Node),
-      cowboy_req:reply(200, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], Result, Req2);
+      reply(200, Result, Req2);
     <<"connect_node">> ->
       Node = proplists:get_value(<<"node">>, PostVals),
       Cookie = proplists:get_value(<<"cookie">>, PostVals),
@@ -45,10 +48,10 @@ process(<<"POST">>, true, Req) ->
                  pang -> <<"Connect failed">>;
                  pong -> <<"ok">>
                end,
-      cowboy_req:reply(200, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], Result, Req2);
+      reply(200, Result, Req2);
     <<"get_nodes">> ->
       Body = rfc4627:encode({obj, [{nodes, get_bare_nodes()}]}),
-      cowboy_req:reply(200, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], list_to_binary(Body), Req2);
+      reply(200, list_to_binary(Body), Req2);
     <<"del_node">> ->
       Node = proplists:get_value(<<"node">>, PostVals),
       del_node(Node),
@@ -58,15 +61,18 @@ process(_, _, Req) ->
   %% Method not allowed.
   cowboy_req:reply(405, Req).
 
+reply(Code, Body, Req) ->
+  cowboy_req:reply(Code, [{<<"content-type">>, <<"text/plain; charset=utf-8">>}], Body, Req).
+
 do_process(get_sys, Node) ->
-  {Info, Stat, Alloc} = observerweb_sys:sys_info(Node),
+  {Info, Stat} = observerweb_sys:sys_info(Node),
   [{_SysName, SysValue},{_CPUName, CPUValue}] = Info,
   [{_MemName, MemValue},{_StatName, StatValue}] = Stat,
   rfc4627:encode({obj, [{"system", wrap_info(info, SysValue)},
     {"cpu", wrap_info(info, CPUValue)},
     {"memory", wrap_info(info,MemValue)},
-    {"statistics", wrap_info(info, StatValue)},
-    {"alloctor", wrap_info(alloc, Alloc)}]});
+    {"statistics", wrap_info(info, StatValue)}]});
+
 do_process(get_perf, {Node, Type}) ->
   Data0 = observerweb_perf:perf_info(Node, Type),
   case Type of
@@ -76,6 +82,10 @@ do_process(get_perf, {Node, Type}) ->
     _ ->
       rfc4627:encode({obj, Data0})
   end;
+
+do_process(get_malloc, Node) ->
+  Data = observerweb_alloc:memory_alloc_info(Node),
+  rfc4627:encode({obj, [{allocator, wrap_info(alloc, Data)}]});
 
 do_process(get_pro, Type) ->
   case Type of

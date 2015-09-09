@@ -16,10 +16,11 @@
     <script type="text/javascript">
          $(document).ready(function(){
              getNodes();
-             loadSysInfo();;
+             loadSysInfo();
              setTimeout(function(){
                  loadCharts();
              }, 2000);
+             loadMAlocInfo();
              loadProInfo();
              $('#nodes li a').on("click", function(){
                  console.log("Value: ", $(this).html());
@@ -36,12 +37,13 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Observer</a>
+                <a class="navbar-brand" href="https://github.com/freecnpro/ObserverWeb">ObserverWeb</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#system" role="tab" data-toggle="tab">System</a></li>
                     <li><a href="#load-charts" role="tab" data-toggle="tab">Load Charts</a></li>
+                    <li><a href="#memory-alloc" role="tab" data-toggle="tab">Memory Allocators</a></li>
                     <li><a href="#applications" role="tab" data-toggle="tab">Appications</a></li>
                     <li><a href="#processes" role="tab" data-toggle="tab">Processes</a></li>
                     <li><a href="#table-viewer" role="tab" data-toggle="tab">Table Viewer</a></li>
@@ -110,21 +112,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <table data-toggle="table" data-cache="false" data-height="200">
-                        <thead>
-                        <tr>
-                            <th>Allocator Type</th>
-                            <th>Block size(KB)</th>
-                            <th>Carrier size(KB)</th>
-                        </tr>
-                        </thead>
-                        <tbody id="alloctor-table">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
         <div class="tab-pane" id="load-charts">
             <div class="row">
@@ -138,6 +125,33 @@
                 </div>
                 <div class="col-md-6">
                     <div id="io-usage" style="min-width:350px;height:300px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="memory-alloc">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="carriers-size" style="min-width:800px;height:300px"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="carriers-utilization" style="min-width:800px;height:300px"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table data-toggle="table" data-cache="false" data-height="200">
+                        <thead>
+                        <tr>
+                            <th>Allocator Type</th>
+                            <th>Block size(KB)</th>
+                            <th>Carrier size(KB)</th>
+                        </tr>
+                        </thead>
+                        <tbody id="alloctor-table">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

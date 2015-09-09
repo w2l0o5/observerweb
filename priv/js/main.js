@@ -108,7 +108,6 @@ function loadCharts(){
                                 var max = (values.sort(function(a, b){
                                     return b - a;
                                 }))[0];
-                                console.log("memory max: %d", max);
                                 memoryChart.setTitle({text: getTitle("Memory Usage", max)});
                                 for(var i = 0; i < values.length; i++){
                                     memoryChart.series[i].addPoint([x, getBetterValue(values[i], max)], true, true);
@@ -256,11 +255,185 @@ function loadSysInfos() {
     sendAsyncRequest(xmlhttp, "action=get_sys", function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var jsonData = eval("(" + xmlhttp.responseText + ")");
-            var datas = new Array(jsonData.system, jsonData.memory, jsonData.cpu, jsonData.statistics, jsonData.alloctor);
-            var ids = new Array("#system-architecture", "#memory-info", "#cpu-threads", "#statistics", "#alloctor-table");
+            var datas = new Array(jsonData.system, jsonData.memory, jsonData.cpu, jsonData.statistics);
+            var ids = new Array("#system-architecture", "#memory-info", "#cpu-threads", "#statistics");
             for (var i = 0; i < datas.length; i++) {
                 displayInfo(ids[i], datas[i]);
             }
+        }
+    });
+}
+
+function loadMAlocInfo() {
+    loadMAlocInfos();
+    setInterval(function(){
+        loadMAlocInfos();
+    }, 10*1000);
+
+    // Memory allocators charts
+    var sizeChart, utiliChart;
+
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        },
+        colors: ['#7cb5ec', '#434348', '#90ed7d', '#f7a35c', '#8085e9', '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'] 
+    });
+
+    sizeChart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'carriers-size',
+            type: 'spline',
+            animation: Highcharts.svg,
+            marginRight: 10,
+            events: {
+                load: function() {
+                    var xmlhttp = new XMLHttpRequest();
+                    setInterval(function() {
+                        sendAsyncRequest(xmlhttp, "action=get_malloc", function() {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                var data = eval("(" + xmlhttp.responseText + ")");
+                                var x = (new Date()).getTime();
+                                var allocators = data.allocator;
+ 
+                                for(var i = 0; i < allocators.length; i++){
+                                    sizeChart.series[i].addPoint([x, allocators[i].cs / 1024], true, true);
+                                }
+                            }
+                        });
+                    }, 1000);
+                }
+            }
+        },
+        title: {
+            text: 'Carriers Size(MB)',
+            align: 'left'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 100
+        },
+        yAxis: {
+            floor: 0,
+            ceiling: 100,
+            title: null
+        },
+        tooltip: {
+            enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        series: (function() {
+            var seriesdata = [];
+            var names = new Array("Total", "Temp", "Sl", "Std", "Ll", "Eheap", "Ets", "Fix", "Binary", "Driver");
+            for (var i = 0; i < 10; i++) {
+                seriesdata.push({
+                    name: names[i],
+                    data: (function() {
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            j;
+
+                        for (j = -10; j <= 0; j += 1) {
+                            data.push({
+                                x: time + j * 1000,
+                                y: 0
+                            });
+                        }
+                        return data;
+                    }())
+                });
+            }
+            return seriesdata;
+        }())
+    });
+
+    utiliChart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'carriers-utilization',
+            type: 'spline',
+            animation: Highcharts.svg,
+            marginRight: 10,
+            events: {
+                load: function() {
+                    var xmlhttp = new XMLHttpRequest();
+                    setInterval(function() {
+                        sendAsyncRequest(xmlhttp, "action=get_malloc", function() {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                var data = eval("(" + xmlhttp.responseText + ")");
+                                var x = (new Date()).getTime();
+                                var allocators = data.allocator;
+ 
+                                for(var i = 0; i < allocators.length; i++){
+                                    utiliChart.series[i].addPoint([x, (allocators[i].bs / allocators[i].cs)*100], true, true);
+                                }
+                            }
+                        });
+                    }, 1000);
+                }
+            }
+        },
+        title: {
+            text: 'Carriers Utilization(%)',
+            align: 'left'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 100
+        },
+        yAxis: {
+            floor: 0,
+            ceiling: 100,
+            title: null
+        },
+        tooltip: {
+            enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        series: (function() {
+            var seriesdata = [];
+            var names = new Array("Total", "Temp", "Sl", "Std", "Ll", "Eheap", "Ets", "Fix", "Binary", "Driver");
+            for (var i = 0; i < 10; i++) {
+                seriesdata.push({
+                    name: names[i],
+                    data: (function() {
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            j;
+
+                        for (j = -10; j <= 0; j += 1) {
+                            data.push({
+                                x: time + j * 1000,
+                                y: 0
+                            });
+                        }
+                        return data;
+                    }())
+                });
+            }
+            return seriesdata;
+        }())
+    });
+}
+
+function loadMAlocInfos() {
+    var xmlhttp = new XMLHttpRequest();
+    sendAsyncRequest(xmlhttp, "action=get_malloc", function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var jsonData = eval("(" + xmlhttp.responseText + ")");
+
+            displayInfo("#alloctor-table", jsonData.allocator);
         }
     });
 }

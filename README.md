@@ -2,17 +2,32 @@ Observer Web
 ============
 Observer Web is Erlang observer web frontend, base code borrowed from observer gui.
 
-##Feature
+## Feature
 Currently supported:
 * System
 * Load Charts
+* Memory Allocators
 * Processes (preview)
+
+## Usage
+Build and relese.
+```bash
+make rel
+```
+To start the release in the foreground.
+```bash
+./rel/observerweb/bin/observer console
+```
+Open http://127.0.0.1:8080 in your browser
+
 
 ##Screenshots
 ![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_01.png)
 ![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_02.png)
+![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_03.png)
+![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_04.png)
 
-##License
+## License
 
     Copyright 2014-2015 Freecnpro.net
 
