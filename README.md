@@ -22,10 +22,10 @@ Open http://127.0.0.1:8080 in your browser
 
 
 ##Screenshots
-![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_01.png)
-![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_02.png)
-![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_03.png)
-![image](https://github.com/freecnpro/observer-web/blob/master/screenshots/screenshot_04.png)
+![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_01.png)
+![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_02.png)
+![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_03.png)
+![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_04.png)
 
 ## License
 
