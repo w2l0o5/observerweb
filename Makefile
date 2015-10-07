@@ -12,4 +12,4 @@ clean:
 	rebar clean
 
 rel: deps
-	rebar compile generate
+	cd rel && rebar compile generate

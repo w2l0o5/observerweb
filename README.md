@@ -16,12 +16,12 @@ make rel
 ```
 To start the release in the foreground.
 ```bash
-./rel/observerweb/bin/observer console
+./rel/observerweb/bin/observerweb console
 ```
 Open http://127.0.0.1:8080 in your browser
 
 
-##Screenshots
+## Screenshots
 ![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_01.png)
 ![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_02.png)
 ![image](https://github.com/freecnpro/ObserverWeb/blob/master/screenshots/screenshot_03.png)
