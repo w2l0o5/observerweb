@@ -40,6 +40,7 @@ start(_StartType, _StartArgs) ->
       {"/", cowboy_static, {priv_file, observerweb, "index.html"}},
       {"/css/[...]", cowboy_static, {priv_dir, observerweb, "css"}},
       {"/js/[...]", cowboy_static, {priv_dir, observerweb, "js"}},
+      {"/img/[...]", cowboy_static, {priv_dir, observerweb, "img"}},
       {"/info", observerweb_handler, []}
     ]}
   ]),
@@ -61,6 +62,9 @@ start(_StartType, _StartArgs) ->
 %%--------------------------------------------------------------------
 -spec(stop(State :: term()) -> term()).
 stop(_State) ->
+  {ok, Ref} = dets:open_file("observer_table"),
+  dets:delete_all_objects(Ref),
+  dets:close(Ref),
   ok.
 
 %%%===================================================================

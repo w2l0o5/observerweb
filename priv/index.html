@@ -22,8 +22,7 @@
              }, 2000);
              loadMAlocInfo();
              loadProInfo();
-             $('#nodes li a').on("click", function(){
-                 console.log("Value: ", $(this).html());
+             $('ul#nodes').on("click", "li a", function(){
                  var value = $(this).html();
                  if(value != "Connect Node"){
                      changeNode(value);
