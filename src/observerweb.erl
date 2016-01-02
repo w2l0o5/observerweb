@@ -10,7 +10,14 @@
 -author("freecnpro@gmail.com").
 
 %% API
+-export([start/0, stop/0]).
 -export([try_rpc/4]).
+
+start() ->
+  application:ensure_all_started(observerweb).
+
+stop() ->
+  application:stop(observerweb).
 
 try_rpc(Node, Mod, Func, Args) ->
   case rpc:call(Node, Mod, Func, Args) of
