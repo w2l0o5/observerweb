@@ -1,15 +1,15 @@
-.PHONY: rel deps
+.PHONY: _build
 
-all: deps compile
+BASE_DIR = $(shell pwd)
+REBAR    = $(BASE_DIR)/rebar3
+
+all: compile
 
 compile:
-	rebar compile
-
-deps:
-	rebar get-deps
+	@$(REBAR) compile
 
 clean:
-	rebar clean
+	@$(REBAR) clean
 
-rel: deps
-	rebar compile && cd rel && rebar generate
+rel:
+	@$(REBAR) release
