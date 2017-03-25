@@ -9,6 +9,13 @@ Currently supported:
 * Memory Allocators
 * Processes (preview)
 
+## TODO
+
+- [] Applications
+- [x] Processes
+- [] Table viewer
+- [] Trace Overview 
+
 ## Usage
 Build and relese.
 ```bash
