@@ -11,10 +11,10 @@ Currently supported:
 
 ## TODO
 
-- [] Applications
+- [ ] Applications
 - [x] Processes
-- [] Table viewer
-- [] Trace Overview 
+- [ ] Table viewer
+- [ ] Trace Overview 
 
 ## Usage
 Build and relese.
