@@ -25,8 +25,9 @@ function loadCharts(){
                     var xmlhttp = new XMLHttpRequest();
                     setInterval(function() {
                         sendAsyncRequest(xmlhttp, "action=get_perf&type=scheduler", function() {
-                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                                 var newData = eval("(" + xmlhttp.responseText + ")");
+                                console.log(newData);
                                 for (var i = 0; i < schedulerobj.scheduler.length; i++) {
                                     var series = schedulerChart.series[i];
                                     var x = (new Date()).getTime(),
@@ -101,10 +102,10 @@ function loadCharts(){
                     var xmlhttp = new XMLHttpRequest();
                     setInterval(function() {
                         sendAsyncRequest(xmlhttp, "action=get_perf&type=memory", function() {
-                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                                 var data = eval("(" + xmlhttp.responseText + ")");
                                 var x = (new Date()).getTime();
-                                var values = new Array(data.total,data.processes,data.atom,data.binary,data.code,data.ets);
+                                var values = [data.total,data.processes,data.atom,data.binary,data.code,data.ets];
                                 var max = (values.sort(function(a, b){
                                     return b - a;
                                 }))[0];
@@ -143,7 +144,7 @@ function loadCharts(){
         },
         series: (function() {
             var seriesdata = [];
-            var names = new Array("Total", "Processes", "Atom", "Binary", "Code", "Ets");
+            var names = ["Total", "Processes", "Atom", "Binary", "Code", "Ets"];
             for (var i = 0; i < 6; i++) {
                 seriesdata.push({
                     name: names[i],
@@ -176,7 +177,7 @@ function loadCharts(){
                     var xmlhttp = new XMLHttpRequest();
                     setInterval(function() {
                         sendAsyncRequest(xmlhttp, "action=get_perf&type=io", function() {
-                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                                 var data = eval("(" + xmlhttp.responseText + ")");
                                 var x = (new Date()).getTime();
                                 var input = data.input - ioobj.input;
@@ -219,7 +220,7 @@ function loadCharts(){
             var seriesdata = [];
             var responseText = sendSyncRequest("action=get_perf&type=io");
             ioobj = eval("(" + responseText + ")");
-            var names = new Array("Input", "Output");
+            var names = ["Input", "Output"];
             for (var i = 0; i < 2; i++) {
                 seriesdata.push({
                     name: names[i],
@@ -253,10 +254,10 @@ function loadSysInfo(){
 function loadSysInfos() {
     var xmlhttp = new XMLHttpRequest();
     sendAsyncRequest(xmlhttp, "action=get_sys", function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             var jsonData = eval("(" + xmlhttp.responseText + ")");
-            var datas = new Array(jsonData.system, jsonData.memory, jsonData.cpu, jsonData.statistics);
-            var ids = new Array("#system-architecture", "#memory-info", "#cpu-threads", "#statistics");
+            var datas = [jsonData.system, jsonData.memory, jsonData.cpu, jsonData.statistics];
+            var ids = ["#system-architecture", "#memory-info", "#cpu-threads", "#statistics"];
             for (var i = 0; i < datas.length; i++) {
                 displayInfo(ids[i], datas[i]);
             }
@@ -291,7 +292,7 @@ function loadMAlocInfo() {
                     var xmlhttp = new XMLHttpRequest();
                     setInterval(function() {
                         sendAsyncRequest(xmlhttp, "action=get_malloc", function() {
-                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                                 var data = eval("(" + xmlhttp.responseText + ")");
                                 var x = (new Date()).getTime();
                                 var allocators = data.allocator;
@@ -330,7 +331,7 @@ function loadMAlocInfo() {
         },
         series: (function() {
             var seriesdata = [];
-            var names = new Array("Total", "Temp", "Sl", "Std", "Ll", "Eheap", "Ets", "Fix", "Binary", "Driver");
+            var names = ["Total", "Temp", "Sl", "Std", "Ll", "Eheap", "Ets", "Fix", "Binary", "Driver"];
             for (var i = 0; i < 10; i++) {
                 seriesdata.push({
                     name: names[i],
@@ -364,7 +365,7 @@ function loadMAlocInfo() {
                     var xmlhttp = new XMLHttpRequest();
                     setInterval(function() {
                         sendAsyncRequest(xmlhttp, "action=get_malloc", function() {
-                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                                 var data = eval("(" + xmlhttp.responseText + ")");
                                 var x = (new Date()).getTime();
                                 var allocators = data.allocator;
@@ -403,7 +404,7 @@ function loadMAlocInfo() {
         },
         series: (function() {
             var seriesdata = [];
-            var names = new Array("Total", "Temp", "Sl", "Std", "Ll", "Eheap", "Ets", "Fix", "Binary", "Driver");
+            var names = ["Total", "Temp", "Sl", "Std", "Ll", "Eheap", "Ets", "Fix", "Binary", "Driver"];
             for (var i = 0; i < 10; i++) {
                 seriesdata.push({
                     name: names[i],
@@ -430,7 +431,7 @@ function loadMAlocInfo() {
 function loadMAlocInfos() {
     var xmlhttp = new XMLHttpRequest();
     sendAsyncRequest(xmlhttp, "action=get_malloc", function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             var jsonData = eval("(" + xmlhttp.responseText + ")");
 
             displayInfo("#alloctor-table", jsonData.allocator);
@@ -440,7 +441,7 @@ function loadMAlocInfos() {
 
 function displayInfo(id, data) {
     var txt = "";
-    if (id == "#alloctor-table") {
+    if (id === "#alloctor-table") {
         for (var i = 0; i < data.length; i++) {
             txt = txt + "<tr><td>" + data[i].name + "</td><td class=\"text-right\">" + data[i].bs + "</td><td class=\"text-right\">" + data[i].cs + "</td></tr>";
         }
@@ -503,8 +504,8 @@ function connectNode(){
     document.getElementById("connect_node_form").reset();
     var xmlhttp = new XMLHttpRequest();
     sendAsyncRequest(xmlhttp, qs, function(){
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            if(xmlhttp.responseText == "Connect failed"){
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            if(xmlhttp.responseText === "Connect failed"){
                 alert("Connect failed!");
             }else{
                 location.reload();
@@ -516,7 +517,7 @@ function connectNode(){
 function getNodes(){
     var xmlhttp = new XMLHttpRequest();
     sendAsyncRequest(xmlhttp, "action=get_nodes", function(){
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             var jsonData = eval("(" + xmlhttp.responseText + ")");
             var nodes = jsonData.nodes;
             var txt = "";
@@ -532,9 +533,9 @@ function getNodes(){
 function changeNode(node){
     var xmlhttp = new XMLHttpRequest();
     sendAsyncRequest(xmlhttp, "action=change_node&node=" + node, function(){
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             console.log("Respone: ", xmlhttp.responseText);
-            if(xmlhttp.responseText == "true"){
+            if(xmlhttp.responseText === "true"){
                 location.reload();
             }
         }
@@ -551,7 +552,7 @@ function loadProInfo(){
 function loadProInfos() {
     var xmlhttp = new XMLHttpRequest();
     sendAsyncRequest(xmlhttp, "action=get_pro&type=all", function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             var jsonData = eval("(" + xmlhttp.responseText + ")");
             var txt = "";
             for (var i = jsonData.length -1; i >= 0 ; i--) {

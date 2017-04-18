@@ -1,17 +1,19 @@
 %%%-------------------------------------------------------------------
-%%% @author Bill Wang <bill@freecnpro.net>
-%%% @copyright (C) 2015, Freecnpro.net
+%%% @author Bill Wang
+%%% @copyright (C) 2017, Freecnpro
 %%% @doc
 %%%
 %%% @end
-%%% Created : 17. Jun 2015 11:34 AM
+%%% Created : 2017-04-17
 %%%-------------------------------------------------------------------
 -module(observerweb).
 -author("bill@freecnpro.net").
 
 %% API
 -export([start/0, stop/0]).
--export([try_rpc/4]).
+-export([try_rpc/4, env/2]).
+
+-define(APP, ?MODULE).
 
 start() ->
   application:ensure_all_started(observerweb).
@@ -29,3 +31,5 @@ try_rpc(Node, Mod, Func, Args) ->
     Res ->
       Res
   end.
+
+env(Key, Default) -> application:get_env(?APP, Key, Default).

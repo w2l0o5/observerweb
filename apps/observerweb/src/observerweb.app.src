@@ -1,22 +1,19 @@
-%%%-------------------------------------------------------------------
-%%% @author Bill Wang <bill@freecnpro.net>
-%%% @copyright (C) 2015, Freecnpro.net
-%%% @doc
-%%%
-%%% @end
-%%% Created : 17. Jun 2015 11:24 AM
-%%%-------------------------------------------------------------------
 {application, observerweb, [
-  {description, "Observer web frontend"},
-  {vsn, "0.1.0"},
-  {registered, [observerweb_sup]},
-  {applications, [
-    kernel,
-    stdlib,
-    cowboy,
-    xmerl,
-    runtime_tools
-  ]},
-  {mod, {observerweb_app, []}},
-  {env, []}
+    {description, "Observer web frontend"},
+    {vsn, "0.1.1"},
+    {registered, []},
+    {mod, {observerweb_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        cowboy,
+        xmerl,
+        runtime_tools,
+        jiffy
+    ]},
+    {env, []},
+    {modules, []},
+    {maintainers, ["Bill Wang <bill@freecnpro.net>"]},
+    {licenses, ["MIT"]},
+    {links, [{"Github", "https://github.com/freecnpro/observerweb"}]}
 ]}.

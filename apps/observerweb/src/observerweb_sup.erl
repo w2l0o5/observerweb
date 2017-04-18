@@ -1,10 +1,10 @@
 %%%-------------------------------------------------------------------
-%%% @author Bill Wang <bill@freecnpro.net>
-%%% @copyright (C) 2015, Freecnpro.net
+%%% @author Bill Wang
+%%% @copyright (C) 2017, Freecnpro
 %%% @doc
 %%%
 %%% @end
-%%% Created : 17. Jun 2015 11:32 AM
+%%% Created : 2017-04-17
 %%%-------------------------------------------------------------------
 -module(observerweb_sup).
 -author("bill@freecnpro.net").
@@ -23,54 +23,30 @@
 %%% API functions
 %%%===================================================================
 
-%%--------------------------------------------------------------------
-%% @doc
-%% Starts the supervisor
-%%
-%% @end
-%%--------------------------------------------------------------------
 -spec(start_link() ->
-  {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
+    {ok, Pid :: pid()} | ignore | {error, Reason :: term()}).
 start_link() ->
-  supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+    supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
 %%%===================================================================
 %%% Supervisor callbacks
 %%%===================================================================
 
-%%--------------------------------------------------------------------
-%% @private
-%% @doc
-%% Whenever a supervisor is started using supervisor:start_link/[2,3],
-%% this function is called by the new process to find out about
-%% restart strategy, maximum restart frequency and child
-%% specifications.
-%%
-%% @end
-%%--------------------------------------------------------------------
 -spec(init(Args :: term()) ->
-  {ok, {SupFlags :: {RestartStrategy :: supervisor:strategy(),
+    {ok, {SupFlags :: {RestartStrategy :: supervisor:strategy(),
     MaxR :: non_neg_integer(), MaxT :: non_neg_integer()},
-    [ChildSpec :: supervisor:child_spec()]
-  }} |
-  ignore |
-  {error, Reason :: term()}).
+    [ChildSpec :: supervisor:child_spec()]}} | ignore | {error, Reason :: term()}).
 init([]) ->
-  RestartStrategy = one_for_one,
-  MaxRestarts = 10,
-  MaxSecondsBetweenRestarts = 10,
+    RestartStrategy = one_for_one,
+    MaxRestarts = 10,
+    MaxSecondsBetweenRestarts = 10,
 
-  SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+    SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
 
-  Restart = permanent,
-  Shutdown = 2000,
-  Type = worker,
+    Restart = permanent,
+    Shutdown = 2000,
+    Type = worker,
 
-  AChild = {'observerweb_pro', {'observerweb_pro', start_link, []},
-    Restart, Shutdown, Type, ['observerweb_pro']},
+    AChild = {observerweb_pro, {observerweb_pro, start_link, []}, Restart, Shutdown, Type, [observerweb_pro]},
 
-  {ok, {SupFlags, [AChild]}}.
-
-%%%===================================================================
-%%% Internal functions
-%%%===================================================================
+    {ok, {SupFlags, [AChild]}}.

@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Observer Web</title>
     <link rel="icon" href="img/favicon.ico" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
-    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.2.3/themes/grid-light.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.10/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.10/js/themes/grid-light.js"></script>
+    <script src="js/main.js"></script>
+    <script>
          $(document).ready(function(){
              getNodes();
              loadSysInfo();
@@ -24,7 +24,7 @@
              loadProInfo();
              $('ul#nodes').on("click", "li a", function(){
                  var value = $(this).html();
-                 if(value != "Connect Node"){
+                 if(value !== "Connect Node"){
                      changeNode(value);
                  }
              });
@@ -36,7 +36,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="https://github.com/freecnpro/ObserverWeb">ObserverWeb</a>
+                <a class="navbar-brand" href="https://github.com/freecnpro/observerweb">ObserverWeb</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -69,7 +69,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">System and Architecture</h3>
                         </div>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <tbody style="font-size:12px" id="system-architecture">
                             </tbody>
                         </table>
@@ -80,7 +80,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">Memory Usage</h3>
                         </div>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <tbody style="font-size:12px" id="memory-info">
                             </tbody>
                         </table>
@@ -93,7 +93,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">CPU's and Threads</h3>
                         </div>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <tbody style="font-size:12px" id="cpu-threads">
                             </tbody>
                         </table>
@@ -104,7 +104,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">Statistics</h3>
                         </div>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <tbody style="font-size:12px" id="statistics">
                             </tbody>
                         </table>
@@ -140,7 +140,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table data-toggle="table" data-cache="false" data-height="200">
+                    <table data-toggle="table" data-classes="table table-bordered" data-cache="false" data-height="200">
                         <thead>
                         <tr>
                             <th>Allocator Type</th>
@@ -156,7 +156,7 @@
         </div>
         <div class="tab-pane" id="applications"><p>Applications</p></div>
         <div class="tab-pane" id="processes">
-            <table data-toggle="table" data-cache="false" data-height="600">
+            <table data-toggle="table" data-classes="table table-bordered" data-cache="false" data-height="600">
                 <thead>
                 <tr>
                     <th>Pid</th>

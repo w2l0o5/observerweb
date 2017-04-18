@@ -1,10 +1,10 @@
 %%%-------------------------------------------------------------------
-%%% @author Bill Wang <bill@freecnpro.net>
-%%% @copyright (C) 2015, Freecnpro.net
+%%% @author Bill Wang
+%%% @copyright (C) 2017, Freecnpro
 %%% @doc
 %%%
 %%% @end
-%%% Created : 8. September 2015 5:00 PM
+%%% Created : 2017-04-17
 %%%-------------------------------------------------------------------
 -module(observerweb_alloc).
 -author("bill@freecnpro.net").
@@ -12,7 +12,7 @@
 -export([memory_alloc_info/1]).
 
 memory_alloc_info(Node) ->
-	SysInfo = 'observerweb':try_rpc(Node, observer_backend, sys_info, []),
+	SysInfo = observerweb:try_rpc(Node, observer_backend, sys_info, []),
   	AllocFields = alloc_info(SysInfo),
   	AllocFields.
 
