@@ -1,5 +1,6 @@
 Observer Web
 ============
+**This project will no longer be maintained.** 
 Observer Web is erlang observer web frontend, base code borrowed from observer gui.
 
 ## Feature
